@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  gbtnetwork-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gbtnetwork-l1
+    ports:
+      - "9636:9636"       # RPC exposed only on 9636
+      - "30303:30303"     # P2P
+    environment:
+      - NETWORK_ID=999
+      - RPC_ADDR=0.0.0.0
+      - RPC_PORT=9636
+      - RPC_ALLOWED_HOSTS=localhost,GBTNetwork
+    command: >
+      geth
+      --networkid 999
+      --http
+      --http.addr 0.0.0.0
+      --http.port 9636
+      --http.api eth,net,web3,txpool
+      --http.corsdomain "http://localhost,http://GBTNetwork"
+      --http.vhosts "localhost,GBTNetwork"
+      --port 30303
+      --nodiscover
+      --maxpeers 50
+      --syncmode full
+      --datadir /data
+    volumes:
+      - ./chains/gbtnetwork-mainnet:/data
