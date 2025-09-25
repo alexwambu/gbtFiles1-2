@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: gbtnetwork-l1
+    env: docker
+    plan: starter
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: RPC_URL
+        value: http://GBTNetwork:9636
+      - key: CHAIN_ID
+        value: "999"
+      - key: CURRENCY_SYMBOL
+        value: GBT
