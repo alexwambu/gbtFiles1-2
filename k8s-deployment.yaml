@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gbtnetwork-l1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gbtnetwork-l1
+  template:
+    metadata:
+      labels:
+        app: gbtnetwork-l1
+    spec:
+      containers:
+      - name: gbtnetwork-node
+        image: gbtnetwork-l1:latest
+        ports:
+          - containerPort: 9636
+          - containerPort: 30303
+        env:
+          - name: NETWORK_ID
+            value: "999"
+          - name: RPC_ADDR
+            value: "0.0.0.0"
+          - name: RPC_PORT
+            value: "9636"
+        args:
+          - "--networkid=999"
+          - "--http"
+          - "--http.addr=0.0.0.0"
+          - "--http.port=9636"
+          - "--http.api=eth,net,web3,txpool"
+          - "--http.vhosts=localhost,GBTNetwork"
+          - "--nodiscover"
+          - "--syncmode=full"
+        volumeMounts:
+          - mountPath: /data
+            name: chain-data
+      volumes:
+        - name: chain-data
+          persistentVolumeClaim:
+            claimName: gbtnetwork-pvc
