@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gbtnetwork-rpc
+spec:
+  selector:
+    app: gbtnetwork-l1
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 9636
+      targetPort: 9636
+    - protocol: TCP
+      port: 30303
+      targetPort: 30303
